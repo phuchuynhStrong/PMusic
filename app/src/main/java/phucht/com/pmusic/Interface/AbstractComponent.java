@@ -5,4 +5,5 @@ package phucht.com.pmusic.Interface;
  */
 
 public class AbstractComponent {
+    public void cleanUp() {}
 }
