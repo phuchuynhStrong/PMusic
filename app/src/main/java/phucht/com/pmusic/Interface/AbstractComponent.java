@@ -4,6 +4,6 @@ package phucht.com.pmusic.Interface;
  * Created by oldmen on 3/6/18.
  */
 
-public class AbstractComponent {
-    public void cleanUp() {}
+public interface AbstractComponent {
+    public void cleanUp();
 }

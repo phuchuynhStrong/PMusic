@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="phucht.com.pmusic.UI.SplashScr">
+    <ImageView
+        android:id="@+id/splash_scr_imv"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/splash_scr_imv_logo"
+        android:layout_marginTop="200dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content" />
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/splash_scr_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_gravity="center_horizontal"
+        app:indicatorName="LineScalePulseOutIndicator"
+        />
+</FrameLayout>
