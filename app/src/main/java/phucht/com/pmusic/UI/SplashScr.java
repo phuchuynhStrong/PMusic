@@ -38,6 +38,9 @@ public class SplashScr extends AppCompatActivity {
 
     private void startLoading() {
         mIndicator.show();
+
+
+        stopLoading();
     }
 
     private void stopLoading() {
