@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Player Screen color  -->
+    <color name="player_background">#181818</color>
+    <color name="them_color">#3b73db</color>
+    <color name="seekbar_background_color">#e7e7e7</color>
 </resources>
