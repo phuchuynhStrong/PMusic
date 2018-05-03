@@ -118,12 +118,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSongItemClick(DummyContent.DummyItem item) {
-        Toast.makeText(this, "Song " + item.id + " - " + item.content, Toast.LENGTH_SHORT).show();
+    public void onSongItemClick(DummyContent.Item item) {
+        Toast.makeText(this, "Song " + item.id + " - " + item.description, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onPlaylistItemClick(DummyContent.DummyItem item) {
-        Toast.makeText(this, "Playlist " + item.id + " - " + item.content, Toast.LENGTH_SHORT).show();
+    public void onPlaylistItemClick(DummyContent.Item item) {
+        Toast.makeText(this, "Playlist " + item.id + " - " + item.description, Toast.LENGTH_SHORT).show();
     }
 }

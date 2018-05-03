@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 
 import phucht.com.pmusic.UI.MySongRecyclerViewAdapter;
 import phucht.com.pmusic.dummy.DummyContent;
-import phucht.com.pmusic.dummy.DummyContent.DummyItem;
+import phucht.com.pmusic.dummy.DummyContent.Item;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListSongFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnSongFragmentInteractionListener}
  * interface.
  */
 public class SongFragment extends Fragment {
@@ -87,6 +87,6 @@ public class SongFragment extends Fragment {
      */
     public interface OnSongFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onSongItemClick(DummyItem item);
+        void onSongItemClick(Item item);
     }
 }

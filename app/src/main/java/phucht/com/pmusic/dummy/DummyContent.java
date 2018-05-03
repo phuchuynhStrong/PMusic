@@ -16,12 +16,12 @@ public class DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static final List<Item> ITEMS = new ArrayList<Item>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<String, Item> ITEM_MAP = new HashMap<String, Item>();
 
     private static final int COUNT = 25;
 
@@ -32,13 +32,13 @@ public class DummyContent {
         }
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(Item item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        ITEM_MAP.put(String.valueOf(item.id), item);
     }
 
-    private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static Item createDummyItem(int position) {
+        return new Item(position, "Item " + position, makeDetails(position), 1);
     }
 
     private static String makeDetails(int position) {
@@ -51,22 +51,24 @@ public class DummyContent {
     }
 
     /**
-     * A dummy item representing a piece of content.
+     * A item representing a piece of content.
      */
-    public static class DummyItem {
-        public final String id;
-        public final String content;
-        public final String details;
+    public static class Item {
+        public final int id;
+        public final String name;
+        public final String description;
+        public final int favorite;
 
-        public DummyItem(String id, String content, String details) {
+        public Item(int id, String name, String description, int favorite) {
             this.id = id;
-            this.content = content;
-            this.details = details;
+            this.name = name;
+            this.description = description;
+            this.favorite = favorite;
         }
 
         @Override
         public String toString() {
-            return content;
+            return description;
         }
     }
 }
