@@ -8,10 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-import phucht.com.pmusic.UI.MyPlaylistRecyclerViewAdapter;
-import phucht.com.pmusic.dummy.DummyContent;
-import phucht.com.pmusic.dummy.DummyContent.Item;
+import phucht.com.pmusic.Adapter.MyPlaylistRecyclerViewAdapter;
+import phucht.com.pmusic.Object.PlaylistItem;
+import phucht.com.pmusic.Object.PlaylistItem.Playlist;
 
 /**
  * A fragment representing a list of Items.
@@ -23,6 +24,8 @@ public class PlaylistFragment extends Fragment {
 
     private OnPlaylistFragmentInteractionListener mListener;
 
+    public static PlaylistFragment instance = null;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -30,16 +33,15 @@ public class PlaylistFragment extends Fragment {
     public PlaylistFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static PlaylistFragment newInstance(int columnCount) {
-        return new PlaylistFragment();
+    public static PlaylistFragment getInstance() {
+        if (instance == null)
+            instance = new PlaylistFragment();
+        return instance;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -52,7 +54,8 @@ public class PlaylistFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyPlaylistRecyclerViewAdapter(PlaylistItem.PLAYLISTS,
+                    getActivity().getApplicationContext(), mListener));
         }
         return view;
     }
@@ -86,7 +89,10 @@ public class PlaylistFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnPlaylistFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onPlaylistItemClick(Item item);
+        void onPlaylistItemClick(Playlist item);
+
+        void favoritePlaylist(Playlist playlist, Button button);
+
+        void deletePlaylist(Playlist playlist);
     }
 }
