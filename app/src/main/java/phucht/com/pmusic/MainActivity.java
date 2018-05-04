@@ -1,6 +1,8 @@
 package phucht.com.pmusic;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,13 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.Objects;
 
-import phucht.com.pmusic.Adapter.MyPlaylistRecyclerViewAdapter;
-import phucht.com.pmusic.Adapter.MySongRecyclerViewAdapter;
 import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
 import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
 import phucht.com.pmusic.NewMusicFragment.OnNewMusicFragmentInteractionListener;
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     NewMusicFragment newMusicFragment;
     SongFragment songFragment;
     PlaylistFragment playlistFragment;
+    AlertDialog.Builder mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,19 @@ public class MainActivity extends AppCompatActivity
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         navigationView.getMenu().getItem(0).setChecked(true);
 
+    }
+
+    public void createDialogYesNo(String question,
+                                  DialogInterface.OnClickListener yesAction,
+                                  DialogInterface.OnClickListener noAction) {
+        // Use the Builder class for convenient dialog construction
+        if (mDialog == null)
+            mDialog = new AlertDialog.Builder(this);
+        mDialog.setMessage(question)
+                .setPositiveButton(R.string.no, noAction)
+                .setNegativeButton(R.string.yes, yesAction);
+        // Create the AlertDialog object and show it
+        mDialog.create().show();
     }
 
     @Override
@@ -118,48 +132,73 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNewMusicFragmentInteraction(Uri uri) {
+        // TODO click on new music page
         Toast.makeText(this, "New Music", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSongItemClick(Song song) {
+        // TODO play this song
         Toast.makeText(this, "Song " + song.id + " - " + song.description, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void favoriteSong(Song song, Button button) {
+    public void favoriteSong(Song song, ImageButton button) {
         if (song.favorite == 1) {
+            // TODO update icon unfavorite
             song.favorite = 0;
             button.setSelected(false);
+            // TODO update database
         } else {
+            // TODO update icon favorite
             song.favorite = 1;
             button.setSelected(true);
+            // TODO update database
         }
     }
 
     @Override
     public void deleteSong(Song song) {
-        Toast.makeText(this, "Do you want to delete " + song.name, Toast.LENGTH_SHORT).show();
+        createDialogYesNo("Do you want to delete " + song.name,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // TODO delete song & update database
+                        Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
+                    }
+                }, null);
     }
 
     @Override
     public void onPlaylistItemClick(Playlist playlist) {
+        // TODO play this playlist
         Toast.makeText(this, "Playlist " + playlist.id + " - " + playlist.description, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void favoritePlaylist(Playlist playlist, Button button) {
+    public void favoritePlaylist(Playlist playlist, ImageButton button) {
         if (playlist.favorite == 1) {
+            // TODO update icon unfavorite
             playlist.favorite = 0;
             button.setSelected(false);
+            // TODO update database
         } else {
+            // TODO update icon favorite
             playlist.favorite = 1;
             button.setSelected(true);
+            // TODO update database
         }
     }
 
     @Override
     public void deletePlaylist(Playlist playlist) {
-        Toast.makeText(this, "Do you want to delete " + playlist.name, Toast.LENGTH_SHORT).show();
+        createDialogYesNo("Do you want to delete " + playlist.name,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // TODO delete playlist & update database
+                        Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
+                    }
+                }, null);
     }
 }

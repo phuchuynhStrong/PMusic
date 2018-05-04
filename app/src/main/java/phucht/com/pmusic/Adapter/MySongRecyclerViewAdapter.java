@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -101,8 +101,8 @@ public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecycl
         final CircleImageView mAvatar;
         final TextView mName;
         final TextView mDescription;
-        final Button mFavorite;
-        final Button mDelete;
+        final ImageButton mFavorite;
+        final ImageButton mDelete;
 
         ViewHolder(View view) {
             super(view);

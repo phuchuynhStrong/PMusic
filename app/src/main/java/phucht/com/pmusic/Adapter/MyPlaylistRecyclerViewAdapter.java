@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -72,7 +72,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             public void onClick(View view) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
+                    // fragment is attached to one) that an item has been favorited.
                     mListener.favoritePlaylist(holder.mPlaylist, holder.mFavorite);
                 }
             }
@@ -83,7 +83,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
             public void onClick(View view) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
+                    // fragment is attached to one) that an item has been deleted.
                     mListener.deletePlaylist(holder.mPlaylist);
                 }
             }
@@ -101,8 +101,8 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         final CircleImageView mAvatar;
         final TextView mName;
         final TextView mDescription;
-        final Button mFavorite;
-        final Button mDelete;
+        final ImageButton mFavorite;
+        final ImageButton mDelete;
 
         ViewHolder(View view) {
             super(view);

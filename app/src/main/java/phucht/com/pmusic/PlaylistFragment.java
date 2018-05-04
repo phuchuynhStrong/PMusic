@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import phucht.com.pmusic.Adapter.MyPlaylistRecyclerViewAdapter;
 import phucht.com.pmusic.Object.PlaylistItem;
@@ -91,7 +91,7 @@ public class PlaylistFragment extends Fragment {
     public interface OnPlaylistFragmentInteractionListener {
         void onPlaylistItemClick(Playlist item);
 
-        void favoritePlaylist(Playlist playlist, Button button);
+        void favoritePlaylist(Playlist playlist, ImageButton button);
 
         void deletePlaylist(Playlist playlist);
     }

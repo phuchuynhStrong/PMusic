@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import phucht.com.pmusic.Adapter.MySongRecyclerViewAdapter;
 import phucht.com.pmusic.Object.SongItem;
@@ -91,7 +91,7 @@ public class SongFragment extends Fragment {
     public interface OnSongFragmentInteractionListener {
         void onSongItemClick(Song song);
 
-        void favoriteSong(Song song, Button button);
+        void favoriteSong(Song song, ImageButton button);
 
         void deleteSong(Song song);
     }
