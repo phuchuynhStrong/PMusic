@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "29148563623",
+    "firebase_url": "https://pmusic-b095c.firebaseio.com",
+    "project_id": "pmusic-b095c",
+    "storage_bucket": "pmusic-b095c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29148563623:android:7eab67560202107d",
+        "android_client_info": {
+          "package_name": "phucht.com.pmusic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29148563623-pjp36riav7v5d3cfburtqvqvp9528mv9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "phucht.com.pmusic",
+            "certificate_hash": "11e620e508246a8c05881086757c1e539b775229"
+          }
+        },
+        {
+          "client_id": "29148563623-p3hfa6jomvs1d59flnjri0nvhl3rvrnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf82LmAzfa9I3fauhrhbeyMPgSdqIHYmI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29148563623-p3hfa6jomvs1d59flnjri0nvhl3rvrnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
