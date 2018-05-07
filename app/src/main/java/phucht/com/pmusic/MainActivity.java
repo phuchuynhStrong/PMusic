@@ -1,7 +1,7 @@
 package phucht.com.pmusic;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,13 +21,12 @@ import java.util.Objects;
 
 import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
 import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
-import phucht.com.pmusic.NewMusicFragment.OnNewMusicFragmentInteractionListener;
 import phucht.com.pmusic.Object.SongItem.Song;
 import phucht.com.pmusic.Object.PlaylistItem.Playlist;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnSongFragmentInteractionListener,
-        OnPlaylistFragmentInteractionListener, OnNewMusicFragmentInteractionListener {
+        OnPlaylistFragmentInteractionListener {
 
     FragmentTransaction fragmentTransaction;
     NewMusicFragment newMusicFragment;
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -128,12 +127,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onNewMusicFragmentInteraction(Uri uri) {
-        // TODO click on new music page
-        Toast.makeText(this, "New Music", Toast.LENGTH_SHORT).show();
     }
 
     @Override
