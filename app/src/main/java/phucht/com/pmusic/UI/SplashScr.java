@@ -4,14 +4,21 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.wang.avi.AVLoadingIndicatorView;
+
+import java.util.ArrayList;
 
 import phucht.com.pmusic.MainActivity;
 import phucht.com.pmusic.R;
+import phucht.com.pmusic.model.DataReference;
 
 public class SplashScr extends AppCompatActivity {
 
@@ -43,17 +50,19 @@ public class SplashScr extends AppCompatActivity {
     private void startLoading() {
         mIndicator.show();
 
-        mHandler.postDelayed(new Runnable() {
+        DataReference.getInstance().getSectionRef().addValueEventListener(new ValueEventListener() {
             @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        stopLoading();
-                    }
-                });
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataReference.getInstance().setSectionList((ArrayList)dataSnapshot.getValue());
+                stopLoading();
             }
-        }, 2000);
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("SplashLoadingError", "Failed to read value", databaseError.toException());
+                stopLoading();
+            }
+        });
     }
 
     private void stopLoading() {

@@ -7,4 +7,10 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#3F51B5</color>
+
+
+    <!-- Fragment new Music -->
+    <color name="fragment.newmusic.background">#141414</color>
+    <color name="fragment.newmusic.text">#ffffff</color>
+    <color name="fragment.newmusic.singer.text">#80ffffff</color>
 </resources>
