@@ -9,4 +9,6 @@
     <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="appbar_height">64dp</dimen>
+    <dimen name="header_size">20sp</dimen>
 </resources>
