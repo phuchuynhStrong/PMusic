@@ -1,6 +1,11 @@
 package phucht.com.pmusic;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -19,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+import phucht.com.pmusic.Service.PlayAudioService;
 import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
 import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
 import phucht.com.pmusic.Object.SongItem.Song;
@@ -70,6 +76,44 @@ public class MainActivity extends AppCompatActivity
                 .setNegativeButton(R.string.yes, yesAction);
         // Create the AlertDialog object and show it
         mDialog.create().show();
+    }
+
+    private static Boolean mBound = false;
+    private static PlayAudioService mService;
+    private static ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            PlayAudioService.LocalBinder binder = (PlayAudioService.LocalBinder) iBinder;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBound = false;
+        }
+    };
+
+    public static PlayAudioService getPlayService() {
+        return mService;
+    }
+
+    public static Boolean getIsPlayServiceBound() {
+        return mBound;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, PlayAudioService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbindService(mConnection);
+        mBound = false;
     }
 
     @Override
