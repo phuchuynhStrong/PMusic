@@ -3,14 +3,10 @@ package phucht.com.pmusic.Adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +52,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
         holder.mHeader.setText(header);
 
         ArrayList map = (ArrayList) dataMap.get("data");
-        holder.mList.setAdapter(new SongAdapter(mContext, map));
+        holder.mList.setAdapter(new SongInSectionAdapter(mContext, map));
         holder.mList.setLayoutManager(layoutManager);
     }
 

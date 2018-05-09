@@ -5,12 +5,12 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/player_background"
 android:orientation="vertical"
 android:layout_width="match_parent"
-android:layout_height="0dp"
-android:layout_weight="1">
+android:layout_height="match_parent">
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="360dp">
     <ImageView
+        android:id="@+id/cover"
         android:padding="30dp"
         android:layout_margin="20dp"
         android:layout_marginTop="@dimen/appbar_height"
@@ -112,6 +112,7 @@ android:layout_weight="1">
                 android:minHeight="8dp"
                 android:layout_height="20dp"
                 android:thumb="@drawable/volume_thumb"
+                android:id="@+id/seekbar"
                 style="@style/TrackSeekbar"/>
             <TextView
                 android:id="@+id/etr_time_tv"
