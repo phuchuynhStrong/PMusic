@@ -17,7 +17,7 @@ public class SongItem {
         }
     }
 
-    private static Song createSong(int position) {
+    public static Song createSong(int position) {
         return new Song(position, "https://image.flaticon.com/icons/png/128/78/78373.png",
                 "Song " + position, "Description " + position, (position % 2 == 1) ? 1 : 0);
     }

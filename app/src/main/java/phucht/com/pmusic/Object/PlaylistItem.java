@@ -3,6 +3,8 @@ package phucht.com.pmusic.Object;
 import java.util.ArrayList;
 import java.util.List;
 
+import phucht.com.pmusic.Object.SongItem.Song;
+
 public class PlaylistItem {
 
     /**
@@ -18,8 +20,13 @@ public class PlaylistItem {
     }
 
     private static Playlist createPlaylist(int position) {
+        List<Song> list = new ArrayList<>();
+        for (int i = 1; i <= position; i++) {
+            list.add(SongItem.createSong(position));
+        }
         return new Playlist(position, "https://image.flaticon.com/icons/png/128/78/78373.png",
-                "Playlist " + position, "Description " + position, (position%2 == 1) ? 1 : 0);
+                "Playlist " + position, "Description " + position, (position % 2 == 1) ? 1 : 0,
+                list);
     }
 
     /**
@@ -31,13 +38,15 @@ public class PlaylistItem {
         public final String name;
         public final String description;
         public int favorite;
+        public List<Song> songList;
 
-        Playlist(int id, String avatar, String name, String description, int favorite) {
+        Playlist(int id, String avatar, String name, String description, int favorite, List<Song> songList) {
             this.id = id;
             this.avatar = avatar;
             this.name = name;
             this.description = description;
             this.favorite = favorite;
+            this.songList = songList;
         }
     }
 }

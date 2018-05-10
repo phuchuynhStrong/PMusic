@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class PlayAudioService extends Service {
     MediaPlayer mAudioPlayer;

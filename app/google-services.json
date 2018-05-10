@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "29148563623-hh5iealcdlq3irll1b0n4opl08n6gvah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "phucht.com.pmusic",
+            "certificate_hash": "27c18125d7a0086bfb46c458b133ff1500d9cf58"
+          }
+        },
+        {
           "client_id": "29148563623-pjp36riav7v5d3cfburtqvqvp9528mv9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
