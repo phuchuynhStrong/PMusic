@@ -1,7 +1,9 @@
 package phucht.com.pmusic.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +55,10 @@ public class SongInSectionAdapter extends RecyclerView.Adapter<SongInSectionAdap
             public void onClick(View view) {
                 Intent playIntent = new Intent(mContext, PlayerScreen.class);
                 playIntent.putExtra("data", map);
-                mContext.startActivity(playIntent);
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext,
+                        holder.mCover,
+                        "song.image");
+                mContext.startActivity(playIntent, activityOptionsCompat.toBundle());
             }
         });
     }

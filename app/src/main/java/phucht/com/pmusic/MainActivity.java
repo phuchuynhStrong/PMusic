@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -17,6 +18,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
@@ -63,6 +66,11 @@ public class MainActivity extends AppCompatActivity
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Increase duration of enter transition - shared element
+            getWindow().setSharedElementEnterTransition(enterTransition());
+        }
+
     }
 
     public void createDialogYesNo(String question,
@@ -76,6 +84,13 @@ public class MainActivity extends AppCompatActivity
                 .setNegativeButton(R.string.yes, yesAction);
         // Create the AlertDialog object and show it
         mDialog.create().show();
+    }
+
+    private Transition enterTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(2000);
+
+        return bounds;
     }
 
     private static Boolean mBound = false;
