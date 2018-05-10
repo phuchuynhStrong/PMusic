@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -32,45 +34,41 @@ import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
 import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
 import phucht.com.pmusic.Object.SongItem.Song;
 import phucht.com.pmusic.Object.PlaylistItem.Playlist;
+import phucht.com.pmusic.Util.BottomNavigationHelper;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnSongFragmentInteractionListener,
-        OnPlaylistFragmentInteractionListener {
+        implements OnSongFragmentInteractionListener,
+        OnPlaylistFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     FragmentTransaction fragmentTransaction;
     NewMusicFragment newMusicFragment;
     SongFragment songFragment;
     PlaylistFragment playlistFragment;
     AlertDialog.Builder mDialog;
+    BottomNavigationView mBottomNaivgationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        mBottomNaivgationView = findViewById(R.id.bottom_navigation);
+
         setSupportActionBar(toolbar);
+        BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         newMusicFragment = new NewMusicFragment();
         songFragment = SongFragment.getInstance();
         playlistFragment = PlaylistFragment.getInstance();
-
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
-        navigationView.getMenu().getItem(0).setChecked(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Increase duration of enter transition - shared element
             getWindow().setSharedElementEnterTransition(enterTransition());
         }
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment).commit();
     }
 
     public void createDialogYesNo(String question,
@@ -131,15 +129,15 @@ public class MainActivity extends AppCompatActivity
         mBound = false;
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,30 +161,30 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_new_music) {
-            fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
-            Objects.requireNonNull(getSupportActionBar()).setTitle("New Music");
-        } else if (id == R.id.nav_songs) {
-            fragmentTransaction.replace(R.id.frameLayoutMain, songFragment);
-            Objects.requireNonNull(getSupportActionBar()).setTitle("Songs");
-        } else if (id == R.id.nav_playlists) {
-            fragmentTransaction.replace(R.id.frameLayoutMain, playlistFragment);
-            Objects.requireNonNull(getSupportActionBar()).setTitle("Playlists");
-        }
-        fragmentTransaction.commit();
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//
+//        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_new_music) {
+//            fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
+//            Objects.requireNonNull(getSupportActionBar()).setTitle("New Music");
+//        } else if (id == R.id.nav_songs) {
+//            fragmentTransaction.replace(R.id.frameLayoutMain, songFragment);
+//            Objects.requireNonNull(getSupportActionBar()).setTitle("Songs");
+//        } else if (id == R.id.nav_playlists) {
+//            fragmentTransaction.replace(R.id.frameLayoutMain, playlistFragment);
+//            Objects.requireNonNull(getSupportActionBar()).setTitle("Playlists");
+//        }
+//        fragmentTransaction.commit();
+//
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
 
     @Override
     public void onSongItemClick(Song song) {
@@ -252,5 +250,32 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
                     }
                 }, null);
+    }
+
+    void replaceFragment(Fragment fragment) {
+        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                replaceFragment(newMusicFragment);
+                break;
+            case R.id.action_playlist:
+                replaceFragment(playlistFragment);
+                break;
+            case R.id.action_search:
+                replaceFragment(songFragment);
+                break;
+            case R.id.action_setting:
+                // Temporarily
+                replaceFragment(songFragment);
+                break;
+            default:
+
+        }
+        return false;
     }
 }
