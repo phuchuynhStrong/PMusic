@@ -44,11 +44,11 @@ public class PlayerFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         mData = (HashMap) getArguments().getSerializable("data");
-        try {
-            MainActivity.getPlayService().playMedia(mData.get("mp3").toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            MainActivity.getPlayService().playMedia(mData.get("mp3").toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
