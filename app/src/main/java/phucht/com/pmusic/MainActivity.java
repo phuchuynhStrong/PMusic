@@ -51,11 +51,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mBottomNaivgationView = findViewById(R.id.bottom_navigation);
         mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
-
-        setSupportActionBar(toolbar);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
 
         newMusicFragment = NewMusicFragment.getInstance();
@@ -232,7 +231,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutMain, fragment);
         fragmentTransaction.commit();
-        Objects.requireNonNull(getSupportActionBar()).setTitle(namePage);
+        setTitle(namePage);
     }
 
     @Override
