@@ -244,13 +244,13 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(homeFragment, "Home");
                 break;
             case R.id.action_playlist:
-                replaceFragment(playlistFragment, "Playlist");
+                replaceFragment(playlistFragment, "Playlists");
                 break;
             case R.id.action_search:
                 replaceFragment(songFragment, "Search");
                 break;
             case R.id.action_setting:
-                replaceFragment(settingFragment, "Setting");
+                replaceFragment(settingFragment, "Settings");
                 break;
             default:
         }
