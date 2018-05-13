@@ -14,20 +14,20 @@ import phucht.com.pmusic.model.DataReference;
 /**
  * A fragment representing new musics.
  */
-public class NewMusicFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     RecyclerView mMainRecylerView;
     SectionAdapter mAdapter;
     LinearLayoutManager mLayoutManger;
 
-    public static NewMusicFragment instance = null;
+    public static HomeFragment instance = null;
 
-    public NewMusicFragment() {
+    public HomeFragment() {
     }
 
-    public static NewMusicFragment getInstance() {
+    public static HomeFragment getInstance() {
         if (instance == null)
-            instance = new NewMusicFragment();
+            instance = new HomeFragment();
         return instance;
     }
 
@@ -44,7 +44,7 @@ public class NewMusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_new_music, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         mMainRecylerView = rootView.findViewById(R.id.recycler_view_main);
 
         mMainRecylerView.setAdapter(mAdapter);

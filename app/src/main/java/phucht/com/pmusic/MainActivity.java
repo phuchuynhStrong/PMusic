@@ -21,6 +21,7 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
@@ -38,12 +39,13 @@ public class MainActivity extends AppCompatActivity
         OnPlaylistFragmentInteractionListener, OnSettingFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     FragmentTransaction fragmentTransaction;
-    NewMusicFragment newMusicFragment;
+    HomeFragment homeFragment;
     PlaylistFragment playlistFragment;
     SongFragment songFragment;
     SettingFragment settingFragment;
 
     AlertDialog.Builder mDialog;
+    TextView titlePage;
     BottomNavigationView mBottomNaivgationView;
 
     @Override
@@ -52,17 +54,18 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        titlePage = findViewById(R.id.titlePage);
 
         mBottomNaivgationView = findViewById(R.id.bottom_navigation);
         mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
 
-        newMusicFragment = NewMusicFragment.getInstance();
+        homeFragment = HomeFragment.getInstance();
         playlistFragment = PlaylistFragment.getInstance();
         songFragment = SongFragment.getInstance();
         settingFragment = SettingFragment.getInstance();
 
-        replaceFragment(newMusicFragment, "New Music");
+        replaceFragment(homeFragment, "New Music");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Increase duration of enter transition - shared element
@@ -231,14 +234,14 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutMain, fragment);
         fragmentTransaction.commit();
-        setTitle(namePage);
+        titlePage.setText(namePage);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                replaceFragment(newMusicFragment, "New Music");
+                replaceFragment(homeFragment, "Home");
                 break;
             case R.id.action_playlist:
                 replaceFragment(playlistFragment, "Playlist");

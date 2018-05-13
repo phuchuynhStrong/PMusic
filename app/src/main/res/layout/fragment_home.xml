@@ -5,7 +5,7 @@
     android:background="@color/fragment.newmusic.background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewMusicFragment">
+    tools:context=".HomeFragment">
     <android.support.v7.widget.RecyclerView
         android:orientation="vertical"
         android:id="@+id/recycler_view_main"
