@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         songFragment = SongFragment.getInstance();
         settingFragment = SettingFragment.getInstance();
 
-        replaceFragment(homeFragment, "New Music");
+        replaceFragment(homeFragment, getString(R.string.home));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Increase duration of enter transition - shared element
@@ -132,16 +132,6 @@ public class MainActivity extends AppCompatActivity
         mBound = false;
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -187,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void deleteSong(Song song) {
-        createDialogYesNo("Do you want to delete " + song.name,
+        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + song.name,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -220,7 +210,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void deletePlaylist(Playlist playlist) {
-        createDialogYesNo("Do you want to delete " + playlist.name,
+        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + playlist.name,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -241,16 +231,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                replaceFragment(homeFragment, "Home");
+                replaceFragment(homeFragment, getString(R.string.home));
                 break;
             case R.id.action_playlist:
-                replaceFragment(playlistFragment, "Playlists");
+                replaceFragment(playlistFragment, getString(R.string.playlists));
                 break;
             case R.id.action_search:
-                replaceFragment(songFragment, "Search");
+                replaceFragment(songFragment, getString(R.string.search));
                 break;
             case R.id.action_setting:
-                replaceFragment(settingFragment, "Settings");
+                replaceFragment(settingFragment, getString(R.string.settings));
                 break;
             default:
         }

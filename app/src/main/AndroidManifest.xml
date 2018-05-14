@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".Util.App"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,22 +18,19 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.PlayerScreen">
-
-        </activity>
-
-        <activity android:name=".MainActivity" >
+        <activity android:name=".UI.PlayerScreen"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
             </intent-filter>
         </activity>
 
-        <service android:name=".Service.PlayAudioService"/>
+        <service android:name=".Service.PlayAudioService" />
 
+        <activity android:name=".LanguageActivity"></activity>
     </application>
 
 </manifest>

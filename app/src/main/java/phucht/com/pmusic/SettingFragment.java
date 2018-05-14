@@ -1,6 +1,7 @@
 package phucht.com.pmusic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -66,6 +67,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
+                Intent intent = new Intent(getContext(), LanguageActivity.class);
+                startActivity(intent);
             }
         });
     }
