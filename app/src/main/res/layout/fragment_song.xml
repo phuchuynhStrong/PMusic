@@ -7,4 +7,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SongFragment"
-    tools:listitem="@layout/layout_song" />
+    tools:listitem="@layout/layout_item_song" />

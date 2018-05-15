@@ -51,7 +51,7 @@ public class LanguageUtils {
             // error, make sure these arrays are same size
             return languageList;
         }
-        for (int i = 0, size = languageNames.size(); i < size; i++) {
+        for (int i = 0; i < languageNames.size(); i++) {
             languageList.add(new Language(i, languageNames.get(i), languageCodes.get(i)));
         }
         return languageList;

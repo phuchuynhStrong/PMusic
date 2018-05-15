@@ -53,6 +53,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
+                Intent intent = new Intent(getContext(), LanguageActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -67,8 +69,6 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
-                Intent intent = new Intent(getContext(), LanguageActivity.class);
-                startActivity(intent);
             }
         });
     }

@@ -27,7 +27,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     private final List<Playlist> playlistList;
     private final Context mContext;
-    private final PlaylistFragment.OnPlaylistFragmentInteractionListener mListener;
+    private final OnPlaylistFragmentInteractionListener mListener;
 
     public MyPlaylistRecyclerViewAdapter(List<Playlist> playlists, Context context, OnPlaylistFragmentInteractionListener listener) {
         playlistList = playlists;
@@ -37,7 +37,7 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_playlist, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_playlist, parent, false);
         return new ViewHolder(view);
     }
 
