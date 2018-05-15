@@ -1,11 +1,14 @@
 package phucht.com.pmusic;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 import phucht.com.pmusic.Adapter.LanguageAdapter;
 import phucht.com.pmusic.Interface.OnLanguageActivityInteractionListener;
@@ -19,7 +22,7 @@ public class LanguageActivity extends AppCompatActivity implements OnLanguageAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LanguageUtils.loadLocale();
+        LanguageUtils.loadLocale(this);
         setContentView(R.layout.activity_language);
         RecyclerView recyclerView = findViewById(R.id.rvLanguage);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -29,14 +32,7 @@ public class LanguageActivity extends AppCompatActivity implements OnLanguageAct
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        LanguageUtils.loadLocale();
-    }
-
-    @Override
     public void onLanguageItemClick(Language language) {
-        Toast.makeText(this, language.getName(), Toast.LENGTH_SHORT).show();
         if (!language.getCode().equals(LanguageUtils.getCurrentLanguage().getCode())) {
             onChangeLanguageSuccessfully(language);
         }
@@ -44,8 +40,9 @@ public class LanguageActivity extends AppCompatActivity implements OnLanguageAct
 
     private void onChangeLanguageSuccessfully(final Language language) {
         mLanguageAdapter.setCurrentLanguage(language);
-        LanguageUtils.changeLanguage(language);
-        setResult(RESULT_OK, new Intent());
+        LanguageUtils.changeLanguage(LanguageActivity.this, language);
+//        setResult(RESULT_OK, new Intent());
+        Toast.makeText(this, getString(R.string.home), Toast.LENGTH_SHORT).show();
         finish();
     }
 }

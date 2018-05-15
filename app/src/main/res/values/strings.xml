@@ -17,17 +17,22 @@
     <!--untranslatable-->
     <string name="language_english" translatable="false">English</string>
     <string name="language_vietnamese" translatable="false">Tiếng Việt</string>
+    <string name="language_french" translatable="false">French</string>
+
 
     <string-array name="language_names">
         <item>@string/language_english</item>
         <item>@string/language_vietnamese</item>
+        <item>@string/language_french</item>
     </string-array>
 
     <string name="language_english_code" translatable="false">en</string>
     <string name="language_vietnamese_code" translatable="false">vi</string>
+    <string name="language_french_code" translatable="false">fr</string>
 
     <string-array name="language_codes">
         <item>@string/language_english_code</item>
         <item>@string/language_vietnamese_code</item>
+        <item>@string/language_french_code</item>
     </string-array>
 </resources>

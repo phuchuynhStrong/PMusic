@@ -29,9 +29,11 @@ public class SettingFragment extends Fragment {
     }
 
     public static SettingFragment getInstance() {
-        if (instance == null)
-            instance = new SettingFragment();
-        return instance;
+//        if (instance == null)
+//            instance = new SettingFragment();
+//        return instance;
+
+        return new SettingFragment();
     }
 
     @Override

@@ -1,10 +1,13 @@
 package phucht.com.pmusic;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.design.widget.BottomNavigationView;
@@ -24,8 +27,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.Objects;
 
+import phucht.com.pmusic.Object.Language;
 import phucht.com.pmusic.Service.PlayAudioService;
 import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
 import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
@@ -33,6 +38,8 @@ import phucht.com.pmusic.SettingFragment.OnSettingFragmentInteractionListener;
 import phucht.com.pmusic.Object.SongItem.Song;
 import phucht.com.pmusic.Object.PlaylistItem.Playlist;
 import phucht.com.pmusic.Util.BottomNavigationHelper;
+import phucht.com.pmusic.Util.LanguageUtils;
+import phucht.com.pmusic.Util.SharedPrefs;
 
 public class MainActivity extends AppCompatActivity
         implements OnSongFragmentInteractionListener,
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LanguageUtils.loadLocale(MainActivity.this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        Toast.makeText(this, LanguageUtils.getCurrentLanguage().getCode(), Toast.LENGTH_SHORT).show();
     }
 
     public void createDialogYesNo(String question,
@@ -87,6 +96,40 @@ public class MainActivity extends AppCompatActivity
         // Create the AlertDialog object and show it
         mDialog.create().show();
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(updateBaseContextLocale(base));
+    }
+
+    private Context updateBaseContextLocale(Context context) {
+        Language language = LanguageUtils.getCurrentLanguage();
+        Locale locale = new Locale(language.getCode());
+        Locale.setDefault(locale);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return updateResourcesLocale(context, locale);
+        }
+
+        return updateResourcesLocaleLegacy(context, locale);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private Context updateResourcesLocale(Context context, Locale locale) {
+        Configuration configuration = context.getResources().getConfiguration();
+        configuration.setLocale(locale);
+        return context.createConfigurationContext(configuration);
+    }
+
+    @SuppressWarnings("deprecation")
+    private Context updateResourcesLocaleLegacy(Context context, Locale locale) {
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        return context;
+    }
+
 
     private Transition enterTransition() {
         ChangeBounds bounds = new ChangeBounds();
@@ -126,6 +169,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        LanguageUtils.loadLocale(MainActivity.this);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         unbindService(mConnection);
@@ -148,6 +197,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            LocaleHelper.setLocale(this, "fr");
+            Toast.makeText(getApplicationContext(), getText(R.string.language), Toast.LENGTH_SHORT).show();
             return true;
         }
 
