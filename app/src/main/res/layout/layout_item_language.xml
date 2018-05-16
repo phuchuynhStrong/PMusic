@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rbLanguage"
+    android:id="@+id/tvLanguage"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@android:color/white"
-    android:clickable="false"
-    android:layoutDirection="rtl"
+    android:layout_height="wrap_content"
+    android:background="@drawable/setting_state"
     android:padding="@dimen/margin_medium"
     android:textSize="@dimen/text_medium"
     tools:text="@string/language_english" />

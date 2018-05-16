@@ -1,6 +1,7 @@
 package phucht.com.pmusic.Adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,48 +11,49 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import phucht.com.pmusic.PlaylistFragment;
-import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
-import phucht.com.pmusic.R;
-import phucht.com.pmusic.Object.PlaylistItem.Playlist;
-
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import phucht.com.pmusic.Interface.OnSongItemClickListener;
+import phucht.com.pmusic.R;
+
+import phucht.com.pmusic.model.Song;
+
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Playlist} and makes a call to the
- * specified {@link PlaylistFragment.OnPlaylistFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link Song} and makes a call to the
+ * specified {@link OnSongItemClickListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
-    private final List<Playlist> playlistList;
+    private final List<Song> songList;
     private final Context mContext;
-    private final OnPlaylistFragmentInteractionListener mListener;
+    private final OnSongItemClickListener mListener;
 
-    public MyPlaylistRecyclerViewAdapter(List<Playlist> playlists, Context context, OnPlaylistFragmentInteractionListener listener) {
-        playlistList = playlists;
+    public SongAdapter(List<Song> songs, Context context, OnSongItemClickListener listener) {
+        songList = songs;
         mContext = context;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_playlist, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_song, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mPlaylist = playlistList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        holder.mSong = songList.get(position);
 
         Glide.with(mContext)
                 .load(R.drawable.ic_placeholder)
                 .into(holder.mAvatar);
 
-        holder.mName.setText(holder.mPlaylist.name);
-        holder.mDescription.setText(holder.mPlaylist.description);
-        if (holder.mPlaylist.favorite == 1)
+        holder.mName.setText(holder.mSong.getName());
+        holder.mDescription.setText(holder.mSong.getDescription());
+        if (holder.mSong.getFavorite() == 1)
             holder.mFavorite.setSelected(true);
         else
             holder.mFavorite.setSelected(false);
@@ -59,10 +61,10 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
+                if (mListener != null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onPlaylistItemClick(holder.mPlaylist);
+                    mListener.onSongItemClick(holder.mSong);
                 }
             }
         });
@@ -70,10 +72,10 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         holder.mFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (null != mListener) {
+                if (mListener != null) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been favorited.
-                    mListener.favoritePlaylist(holder.mPlaylist, holder.mFavorite);
+                    mListener.favoriteSong(holder.mSong, holder.mFavorite);
                 }
             }
         });
@@ -81,10 +83,10 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
         holder.mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been deleted.
-                    mListener.deletePlaylist(holder.mPlaylist);
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been deleted.
+                if (mListener != null) {
+                    mListener.deleteSong(holder.mSong);
                 }
             }
         });
@@ -92,12 +94,12 @@ public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlayli
 
     @Override
     public int getItemCount() {
-        return playlistList.size();
+        return songList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
-        public Playlist mPlaylist;
+        public Song mSong;
         final CircleImageView mAvatar;
         final TextView mName;
         final TextView mDescription;

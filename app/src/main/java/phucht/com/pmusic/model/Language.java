@@ -1,4 +1,4 @@
-package phucht.com.pmusic.Object;
+package phucht.com.pmusic.model;
 
 public class Language {
     private int mId;

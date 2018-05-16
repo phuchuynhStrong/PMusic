@@ -1,20 +1,17 @@
 package phucht.com.pmusic;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,23 +24,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Locale;
 import java.util.Objects;
 
-import phucht.com.pmusic.Object.Language;
 import phucht.com.pmusic.Service.PlayAudioService;
-import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
-import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
-import phucht.com.pmusic.SettingFragment.OnSettingFragmentInteractionListener;
-import phucht.com.pmusic.Object.SongItem.Song;
-import phucht.com.pmusic.Object.PlaylistItem.Playlist;
+import phucht.com.pmusic.Interface.OnSongItemClickListener;
+import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
+import phucht.com.pmusic.model.Playlist;
 import phucht.com.pmusic.Util.BottomNavigationHelper;
 import phucht.com.pmusic.Util.LanguageUtils;
-import phucht.com.pmusic.Util.SharedPrefs;
+import phucht.com.pmusic.model.Song;
 
 public class MainActivity extends AppCompatActivity
-        implements OnSongFragmentInteractionListener,
-        OnPlaylistFragmentInteractionListener, OnSettingFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
+        implements OnSongItemClickListener,
+        OnPlaylistItemClickListener, OnNavigationItemSelectedListener {
 
     FragmentTransaction fragmentTransaction;
     HomeFragment homeFragment;
@@ -58,7 +51,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LanguageUtils.loadLocale(MainActivity.this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,7 +73,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        Toast.makeText(this, LanguageUtils.getCurrentLanguage().getCode(), Toast.LENGTH_SHORT).show();
     }
 
     public void createDialogYesNo(String question,
@@ -96,40 +87,6 @@ public class MainActivity extends AppCompatActivity
         // Create the AlertDialog object and show it
         mDialog.create().show();
     }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(updateBaseContextLocale(base));
-    }
-
-    private Context updateBaseContextLocale(Context context) {
-        Language language = LanguageUtils.getCurrentLanguage();
-        Locale locale = new Locale(language.getCode());
-        Locale.setDefault(locale);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return updateResourcesLocale(context, locale);
-        }
-
-        return updateResourcesLocaleLegacy(context, locale);
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    private Context updateResourcesLocale(Context context, Locale locale) {
-        Configuration configuration = context.getResources().getConfiguration();
-        configuration.setLocale(locale);
-        return context.createConfigurationContext(configuration);
-    }
-
-    @SuppressWarnings("deprecation")
-    private Context updateResourcesLocaleLegacy(Context context, Locale locale) {
-        Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = locale;
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        return context;
-    }
-
 
     private Transition enterTransition() {
         ChangeBounds bounds = new ChangeBounds();
@@ -169,12 +126,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        LanguageUtils.loadLocale(MainActivity.this);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         unbindService(mConnection);
@@ -197,8 +148,6 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            LocaleHelper.setLocale(this, "fr");
-            Toast.makeText(getApplicationContext(), getText(R.string.language), Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -208,19 +157,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onSongItemClick(Song song) {
         // TODO play this song
-        Toast.makeText(this, "Song " + song.id + " - " + song.description, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Song " + song.getId() + " - " + song.getDescription(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void favoriteSong(Song song, ImageButton button) {
-        if (song.favorite == 1) {
+        if (song.getFavorite() == 1) {
             // TODO update icon unfavorite
-            song.favorite = 0;
+            song.setFavorite(0);
             button.setSelected(false);
             // TODO update database
         } else {
             // TODO update icon favorite
-            song.favorite = 1;
+            song.setFavorite(1);
             button.setSelected(true);
             // TODO update database
         }
@@ -228,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void deleteSong(Song song) {
-        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + song.name,
+        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + song.getFavorite(),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -241,19 +190,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPlaylistItemClick(Playlist playlist) {
         // TODO play this playlist
-        Toast.makeText(this, "Playlist " + playlist.id + " - " + playlist.description, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Playlist " + playlist.getId() + " - " + playlist.getDescription(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void favoritePlaylist(Playlist playlist, ImageButton button) {
-        if (playlist.favorite == 1) {
+        if (playlist.getFavorite() == 1) {
             // TODO update icon unfavorite
-            playlist.favorite = 0;
+            playlist.setFavorite(0);
             button.setSelected(false);
             // TODO update database
         } else {
             // TODO update icon favorite
-            playlist.favorite = 1;
+            playlist.setFavorite(1);
             button.setSelected(true);
             // TODO update database
         }
@@ -261,7 +210,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void deletePlaylist(Playlist playlist) {
-        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + playlist.name,
+        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + playlist.getName(),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -296,10 +245,5 @@ public class MainActivity extends AppCompatActivity
             default:
         }
         return false;
-    }
-
-    @Override
-    public void onSettingFragmentInteraction(Uri uri) {
-
     }
 }

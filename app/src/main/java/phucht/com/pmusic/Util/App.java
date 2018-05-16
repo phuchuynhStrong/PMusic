@@ -18,6 +18,7 @@ public class App extends Application {
         super.onCreate();
         mSelf = this;
         mGSon = new Gson();
+        LanguageUtils.loadLocale();
     }
 
     public Gson getGSon() {

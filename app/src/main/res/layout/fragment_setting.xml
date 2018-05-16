@@ -9,36 +9,30 @@
     <TextView
         android:id="@+id/settingLanguage"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/setting_state"
         android:drawableEnd="@drawable/ic_right_black_24dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="0dp"
-        android:paddingStart="@dimen/margin_large"
+        android:padding="@dimen/margin_medium"
         android:text="@string/language"
         android:textSize="@dimen/text_medium" />
 
     <TextView
         android:id="@+id/settingTheme"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/setting_state"
         android:drawableEnd="@drawable/ic_right_black_24dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="0dp"
-        android:paddingStart="@dimen/margin_large"
+        android:padding="@dimen/margin_medium"
         android:text="@string/theme"
         android:textSize="@dimen/text_medium" />
 
     <TextView
         android:id="@+id/settingAbout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/setting_state"
         android:drawableEnd="@drawable/ic_right_black_24dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="0dp"
-        android:paddingStart="@dimen/margin_large"
+        android:padding="@dimen/margin_medium"
         android:text="@string/about"
         android:textSize="@dimen/text_medium" />
 
