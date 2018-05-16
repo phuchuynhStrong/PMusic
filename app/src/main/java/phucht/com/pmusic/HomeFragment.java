@@ -11,29 +11,24 @@ import android.view.ViewGroup;
 import phucht.com.pmusic.Adapter.SectionAdapter;
 import phucht.com.pmusic.model.DataReference;
 
-public class NewMusicFragment extends Fragment {
+/**
+ * A fragment representing new musics.
+ */
+public class HomeFragment extends Fragment {
 
     RecyclerView mMainRecylerView;
     SectionAdapter mAdapter;
     LinearLayoutManager mLayoutManger;
 
-    public NewMusicFragment() {
-        // Required empty public constructor
+    public static HomeFragment instance = null;
+
+    public HomeFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewMusicFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NewMusicFragment newInstance(String param1, String param2) {
-        NewMusicFragment fragment = new NewMusicFragment();
-
-        return fragment;
+    public static HomeFragment getInstance() {
+        if (instance == null)
+            instance = new HomeFragment();
+        return instance;
     }
 
     @Override
@@ -49,7 +44,7 @@ public class NewMusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_new_music, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         mMainRecylerView = rootView.findViewById(R.id.recycler_view_main);
 
         mMainRecylerView.setAdapter(mAdapter);

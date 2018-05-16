@@ -8,16 +8,12 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.ChangeBounds;
@@ -25,26 +21,31 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
 
 import phucht.com.pmusic.Service.PlayAudioService;
-import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
-import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
-import phucht.com.pmusic.Object.SongItem.Song;
-import phucht.com.pmusic.Object.PlaylistItem.Playlist;
+import phucht.com.pmusic.Interface.OnSongItemClickListener;
+import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
+import phucht.com.pmusic.model.Playlist;
 import phucht.com.pmusic.Util.BottomNavigationHelper;
+import phucht.com.pmusic.Util.LanguageUtils;
+import phucht.com.pmusic.model.Song;
 
 public class MainActivity extends AppCompatActivity
-        implements OnSongFragmentInteractionListener,
-        OnPlaylistFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
+        implements OnSongItemClickListener,
+        OnPlaylistItemClickListener, OnNavigationItemSelectedListener {
 
     FragmentTransaction fragmentTransaction;
-    NewMusicFragment newMusicFragment;
-    SongFragment songFragment;
+    HomeFragment homeFragment;
     PlaylistFragment playlistFragment;
+    SongFragment songFragment;
+    SettingFragment settingFragment;
+
     AlertDialog.Builder mDialog;
+    TextView titlePage;
     BottomNavigationView mBottomNaivgationView;
 
     @Override
@@ -52,23 +53,26 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        mBottomNaivgationView = findViewById(R.id.bottom_navigation);
-
         setSupportActionBar(toolbar);
+        titlePage = findViewById(R.id.titlePage);
+
+        mBottomNaivgationView = findViewById(R.id.bottom_navigation);
+        mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        newMusicFragment = new NewMusicFragment();
-        songFragment = SongFragment.getInstance();
+        homeFragment = HomeFragment.getInstance();
         playlistFragment = PlaylistFragment.getInstance();
+        songFragment = SongFragment.getInstance();
+        settingFragment = SettingFragment.getInstance();
+
+        replaceFragment(homeFragment, getString(R.string.home));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Increase duration of enter transition - shared element
             getWindow().setSharedElementEnterTransition(enterTransition());
         }
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment).commit();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
     }
 
     public void createDialogYesNo(String question,
@@ -87,7 +91,6 @@ public class MainActivity extends AppCompatActivity
     private Transition enterTransition() {
         ChangeBounds bounds = new ChangeBounds();
         bounds.setDuration(2000);
-
         return bounds;
     }
 
@@ -129,16 +132,6 @@ public class MainActivity extends AppCompatActivity
         mBound = false;
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -161,47 +154,22 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//
-//        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_new_music) {
-//            fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
-//            Objects.requireNonNull(getSupportActionBar()).setTitle("New Music");
-//        } else if (id == R.id.nav_songs) {
-//            fragmentTransaction.replace(R.id.frameLayoutMain, songFragment);
-//            Objects.requireNonNull(getSupportActionBar()).setTitle("Songs");
-//        } else if (id == R.id.nav_playlists) {
-//            fragmentTransaction.replace(R.id.frameLayoutMain, playlistFragment);
-//            Objects.requireNonNull(getSupportActionBar()).setTitle("Playlists");
-//        }
-//        fragmentTransaction.commit();
-//
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
-
     @Override
     public void onSongItemClick(Song song) {
         // TODO play this song
-        Toast.makeText(this, "Song " + song.id + " - " + song.description, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Song " + song.getId() + " - " + song.getDescription(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void favoriteSong(Song song, ImageButton button) {
-        if (song.favorite == 1) {
+        if (song.getFavorite() == 1) {
             // TODO update icon unfavorite
-            song.favorite = 0;
+            song.setFavorite(0);
             button.setSelected(false);
             // TODO update database
         } else {
             // TODO update icon favorite
-            song.favorite = 1;
+            song.setFavorite(1);
             button.setSelected(true);
             // TODO update database
         }
@@ -209,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void deleteSong(Song song) {
-        createDialogYesNo("Do you want to delete " + song.name,
+        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + song.getFavorite(),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -222,19 +190,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPlaylistItemClick(Playlist playlist) {
         // TODO play this playlist
-        Toast.makeText(this, "Playlist " + playlist.id + " - " + playlist.description, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Playlist " + playlist.getId() + " - " + playlist.getDescription(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void favoritePlaylist(Playlist playlist, ImageButton button) {
-        if (playlist.favorite == 1) {
+        if (playlist.getFavorite() == 1) {
             // TODO update icon unfavorite
-            playlist.favorite = 0;
+            playlist.setFavorite(0);
             button.setSelected(false);
             // TODO update database
         } else {
             // TODO update icon favorite
-            playlist.favorite = 1;
+            playlist.setFavorite(1);
             button.setSelected(true);
             // TODO update database
         }
@@ -242,7 +210,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void deletePlaylist(Playlist playlist) {
-        createDialogYesNo("Do you want to delete " + playlist.name,
+        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + playlist.getName(),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -252,29 +220,29 @@ public class MainActivity extends AppCompatActivity
                 }, null);
     }
 
-    void replaceFragment(Fragment fragment) {
-        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
+    void replaceFragment(Fragment fragment, String namePage) {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutMain, fragment);
         fragmentTransaction.commit();
+        titlePage.setText(namePage);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                replaceFragment(newMusicFragment);
+                replaceFragment(homeFragment, getString(R.string.home));
                 break;
             case R.id.action_playlist:
-                replaceFragment(playlistFragment);
+                replaceFragment(playlistFragment, getString(R.string.playlists));
                 break;
             case R.id.action_search:
-                replaceFragment(songFragment);
+                replaceFragment(songFragment, getString(R.string.search));
                 break;
             case R.id.action_setting:
-                // Temporarily
-                replaceFragment(songFragment);
+                replaceFragment(settingFragment, getString(R.string.settings));
                 break;
             default:
-
         }
         return false;
     }

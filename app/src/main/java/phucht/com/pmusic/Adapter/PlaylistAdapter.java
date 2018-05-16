@@ -1,6 +1,7 @@
 package phucht.com.pmusic.Adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,47 +12,46 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import phucht.com.pmusic.PlaylistFragment;
-import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
+import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
 import phucht.com.pmusic.R;
-import phucht.com.pmusic.Object.PlaylistItem.Playlist;
+import phucht.com.pmusic.model.Playlist;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Playlist} and makes a call to the
- * specified {@link PlaylistFragment.OnPlaylistFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ * specified {@link OnPlaylistItemClickListener}.
  */
-public class MyPlaylistRecyclerViewAdapter extends RecyclerView.Adapter<MyPlaylistRecyclerViewAdapter.ViewHolder> {
+public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
 
     private final List<Playlist> playlistList;
     private final Context mContext;
-    private final PlaylistFragment.OnPlaylistFragmentInteractionListener mListener;
+    private final OnPlaylistItemClickListener mListener;
 
-    public MyPlaylistRecyclerViewAdapter(List<Playlist> playlists, Context context, OnPlaylistFragmentInteractionListener listener) {
+    public PlaylistAdapter(List<Playlist> playlists, Context context, OnPlaylistItemClickListener listener) {
         playlistList = playlists;
         mContext = context;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_playlist, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_playlist, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mPlaylist = playlistList.get(position);
 
         Glide.with(mContext)
                 .load(R.drawable.ic_placeholder)
                 .into(holder.mAvatar);
 
-        holder.mName.setText(holder.mPlaylist.name);
-        holder.mDescription.setText(holder.mPlaylist.description);
-        if (holder.mPlaylist.favorite == 1)
+        holder.mName.setText(holder.mPlaylist.getName());
+        holder.mDescription.setText(holder.mPlaylist.getDescription());
+        if (holder.mPlaylist.getFavorite() == 1)
             holder.mFavorite.setSelected(true);
         else
             holder.mFavorite.setSelected(false);

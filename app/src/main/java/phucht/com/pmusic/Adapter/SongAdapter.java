@@ -1,6 +1,7 @@
 package phucht.com.pmusic.Adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,45 +14,46 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import phucht.com.pmusic.Interface.OnSongItemClickListener;
 import phucht.com.pmusic.R;
 
-import phucht.com.pmusic.Object.SongItem.Song;
-import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
+import phucht.com.pmusic.model.Song;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Song} and makes a call to the
- * specified {@link OnSongFragmentInteractionListener}.
+ * specified {@link OnSongItemClickListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MySongRecyclerViewAdapter extends RecyclerView.Adapter<MySongRecyclerViewAdapter.ViewHolder> {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     private final List<Song> songList;
     private final Context mContext;
-    private final OnSongFragmentInteractionListener mListener;
+    private final OnSongItemClickListener mListener;
 
-    public MySongRecyclerViewAdapter(List<Song> songs, Context context, OnSongFragmentInteractionListener listener) {
+    public SongAdapter(List<Song> songs, Context context, OnSongItemClickListener listener) {
         songList = songs;
         mContext = context;
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_song, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_song, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mSong = songList.get(position);
 
         Glide.with(mContext)
                 .load(R.drawable.ic_placeholder)
                 .into(holder.mAvatar);
 
-        holder.mName.setText(holder.mSong.name);
-        holder.mDescription.setText(holder.mSong.description);
-        if (holder.mSong.favorite == 1)
+        holder.mName.setText(holder.mSong.getName());
+        holder.mDescription.setText(holder.mSong.getDescription());
+        if (holder.mSong.getFavorite() == 1)
             holder.mFavorite.setSelected(true);
         else
             holder.mFavorite.setSelected(false);

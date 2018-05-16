@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="songs">Bài hát</string>
+    <string name="playlists">Playlists</string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="nothing">nothing</string>
+    <string name="home">Trang chủ</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="settings">Cài đặt</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="theme">Chủ đề</string>
+    <string name="about">Thông tin</string>
+    <string name="do_you_want_to_delete">Bạn có muốn xóa</string>
+</resources>
