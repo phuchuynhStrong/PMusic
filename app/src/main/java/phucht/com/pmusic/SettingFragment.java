@@ -1,7 +1,7 @@
 package phucht.com.pmusic;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,13 +12,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 
 import java.util.Objects;
 
+import phucht.com.pmusic.Util.DialogHelper;
 import phucht.com.pmusic.Util.SharedPrefs;
 import phucht.com.pmusic.model.Theme;
 
@@ -92,6 +91,12 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
+                DialogHelper.getInstance().createDialogOK(getContext(), "PS Team", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).show();
             }
         });
     }
@@ -99,9 +104,9 @@ public class SettingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        int code = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getmCode();
-        toolbar.setBackgroundColor(code);
-        mBottomNavigationView.setItemBackgroundResource(code);
+        int color = getResources().getColor(SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getColor());
+        toolbar.setBackgroundColor(color);
+        mBottomNavigationView.setBackgroundColor(color);
         mTitlepage.setText(R.string.settings);
         mLanguage.setText(R.string.language);
         mTheme.setText(R.string.theme);

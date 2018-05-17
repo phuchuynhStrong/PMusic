@@ -24,11 +24,11 @@ public class App extends Application {
         LanguageUtils.loadLocale();
         Theme theme = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class);
         if (theme == null) {
-            theme = new Theme(0, "Black", R.style.AppThemeBlack);
+            theme = new Theme(0, "Black", R.style.AppThemeBlack, R.color.colorBlack);
             SharedPrefs.getInstance().put(SharedPrefs.THEME, theme);
             setTheme(R.style.AppThemeBlack);
         } else
-            setTheme(theme.getmCode());
+            setTheme(theme.getTheme());
     }
 
     public Gson getGSon() {

@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.design.widget.BottomNavigationView;
@@ -81,9 +82,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void loadTheme() {
-        int code = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getmCode();
-        toolbar.setBackgroundColor(code);
-        mBottomNaivgationView.setItemBackgroundResource(code);
+        int color = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getColor();
+        toolbar.setBackgroundColor(getResources().getColor(color));
+        mBottomNaivgationView.setBackgroundColor(getResources().getColor(color));
     }
 
     public void createDialogYesNo(String question,

@@ -5,10 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 
 import phucht.com.pmusic.Adapter.LanguageAdapter;
 import phucht.com.pmusic.Interface.OnLanguageItemClickListener;
@@ -28,7 +25,7 @@ public class LanguageActivity extends AppCompatActivity implements OnLanguageIte
         setContentView(R.layout.activity_language);
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getmCode());
+        toolbar.setBackgroundColor(getResources().getColor(SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getColor()));
         RecyclerView recyclerView = findViewById(R.id.rvLanguage);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mLanguageAdapter = new LanguageAdapter(LanguageUtils.getLanguageData(),
