@@ -3,6 +3,11 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#3F51B5</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorRed">#8f2727</color>
+    <color name="colorGreen">#3a813a</color>
+    <color name="colorBlue">#444486</color>
     <!-- Player Screen color  -->
     <color name="player_background">#181818</color>
     <color name="them_color">#3b73db</color>

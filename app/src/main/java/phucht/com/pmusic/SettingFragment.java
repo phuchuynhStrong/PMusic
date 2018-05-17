@@ -1,7 +1,7 @@
 package phucht.com.pmusic;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,11 +12,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.Objects;
+
+import phucht.com.pmusic.Util.DialogHelper;
+import phucht.com.pmusic.Util.SharedPrefs;
+import phucht.com.pmusic.model.Theme;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +36,7 @@ public class SettingFragment extends Fragment {
     private TextView mAbout;
     private BottomNavigationView mBottomNavigationView;
     private Menu mBottomMenu;
+    private Toolbar toolbar;
 
     public SettingFragment() {
     }
@@ -58,6 +62,7 @@ public class SettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar);
         mTitlepage = Objects.requireNonNull(getActivity()).findViewById(R.id.titlePage);
         mBottomNavigationView = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
         mBottomMenu = mBottomNavigationView.getMenu();
@@ -76,6 +81,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
+                Intent intent = new Intent(getActivity(), ThemeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -84,6 +91,12 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
+                DialogHelper.getInstance().createDialogOK(getContext(), "PS Team", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).show();
             }
         });
     }
@@ -91,6 +104,9 @@ public class SettingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        int color = getResources().getColor(SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getColor());
+        toolbar.setBackgroundColor(color);
+        mBottomNavigationView.setBackgroundColor(color);
         mTitlepage.setText(R.string.settings);
         mLanguage.setText(R.string.language);
         mTheme.setText(R.string.theme);
