@@ -15,8 +15,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import java.util.Objects;
+
+import phucht.com.pmusic.Util.SharedPrefs;
+import phucht.com.pmusic.model.Theme;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +37,7 @@ public class SettingFragment extends Fragment {
     private TextView mAbout;
     private BottomNavigationView mBottomNavigationView;
     private Menu mBottomMenu;
+    private Toolbar toolbar;
 
     public SettingFragment() {
     }
@@ -58,6 +63,7 @@ public class SettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar);
         mTitlepage = Objects.requireNonNull(getActivity()).findViewById(R.id.titlePage);
         mBottomNavigationView = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
         mBottomMenu = mBottomNavigationView.getMenu();
@@ -76,6 +82,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO
+                Intent intent = new Intent(getActivity(), ThemeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -91,6 +99,9 @@ public class SettingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        int code = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getmCode();
+        toolbar.setBackgroundColor(code);
+        mBottomNavigationView.setItemBackgroundResource(code);
         mTitlepage.setText(R.string.settings);
         mLanguage.setText(R.string.language);
         mTheme.setText(R.string.theme);

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LanguageActivity">
+    tools:context=".ThemeActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            tools:background="@color/colorPrimary"
+            android:background="@color/colorBlack"
             app:layout_scrollFlags="enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/language"
+                android:text="@string/theme"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
@@ -35,7 +35,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvLanguage"
+        android:id="@+id/rvTheme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/layout_item_language" />

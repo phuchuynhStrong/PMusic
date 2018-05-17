@@ -7,7 +7,8 @@ public class SharedPrefs {
 
     private static final String PREFS_NAME = "share_prefs";
     public static final String LANGUAGE = "language";
-    
+    public static final String THEME = "theme";
+
     private static SharedPrefs mInstance;
     private SharedPreferences mSharedPreferences;
 

@@ -29,10 +29,12 @@ import java.util.Objects;
 import phucht.com.pmusic.Service.PlayAudioService;
 import phucht.com.pmusic.Interface.OnSongItemClickListener;
 import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
+import phucht.com.pmusic.Util.SharedPrefs;
 import phucht.com.pmusic.model.Playlist;
 import phucht.com.pmusic.Util.BottomNavigationHelper;
 import phucht.com.pmusic.Util.LanguageUtils;
 import phucht.com.pmusic.model.Song;
+import phucht.com.pmusic.model.Theme;
 
 public class MainActivity extends AppCompatActivity
         implements OnSongItemClickListener,
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     SettingFragment settingFragment;
 
     AlertDialog.Builder mDialog;
+    Toolbar toolbar;
     TextView titlePage;
     BottomNavigationView mBottomNaivgationView;
 
@@ -52,13 +55,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         titlePage = findViewById(R.id.titlePage);
 
         mBottomNaivgationView = findViewById(R.id.bottom_navigation);
         mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
+
+        loadTheme();
 
         homeFragment = HomeFragment.getInstance();
         playlistFragment = PlaylistFragment.getInstance();
@@ -73,6 +78,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+    }
+
+    public void loadTheme() {
+        int code = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getmCode();
+        toolbar.setBackgroundColor(code);
+        mBottomNaivgationView.setItemBackgroundResource(code);
     }
 
     public void createDialogYesNo(String question,
