@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     FragmentTransaction fragmentTransaction;
     NewMusicFragment newMusicFragment;
     SongFragment songFragment;
+    SearchFragment searchFragment;
     PlaylistFragment playlistFragment;
     AlertDialog.Builder mDialog;
     BottomNavigationView mBottomNaivgationView;
@@ -56,10 +57,12 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
+        mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
 
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        newMusicFragment = new NewMusicFragment();
+        newMusicFragment = NewMusicFragment.newInstance();
         songFragment = SongFragment.getInstance();
+        searchFragment = SearchFragment.getInstance();
         playlistFragment = PlaylistFragment.getInstance();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -119,25 +122,15 @@ public class MainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
         Intent intent = new Intent(this, PlayAudioService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        //bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbindService(mConnection);
+        //unbindService(mConnection);
         mBound = false;
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,31 +153,6 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//
-//        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_new_music) {
-//            fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
-//            Objects.requireNonNull(getSupportActionBar()).setTitle("New Music");
-//        } else if (id == R.id.nav_songs) {
-//            fragmentTransaction.replace(R.id.frameLayoutMain, songFragment);
-//            Objects.requireNonNull(getSupportActionBar()).setTitle("Songs");
-//        } else if (id == R.id.nav_playlists) {
-//            fragmentTransaction.replace(R.id.frameLayoutMain, playlistFragment);
-//            Objects.requireNonNull(getSupportActionBar()).setTitle("Playlists");
-//        }
-//        fragmentTransaction.commit();
-//
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
 
     @Override
     public void onSongItemClick(Song song) {
@@ -253,12 +221,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     void replaceFragment(Fragment fragment) {
-        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
-        fragmentTransaction.commit();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutMain, fragment).commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        item.setChecked(true);
         switch (item.getItemId()) {
             case R.id.action_home:
                 replaceFragment(newMusicFragment);
@@ -267,7 +236,7 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(playlistFragment);
                 break;
             case R.id.action_search:
-                replaceFragment(songFragment);
+                replaceFragment(searchFragment);
                 break;
             case R.id.action_setting:
                 // Temporarily

@@ -20,11 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".UI.PlayerScreen">
+        <activity android:name=".UI.PlayerScreen"
+            android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
 
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

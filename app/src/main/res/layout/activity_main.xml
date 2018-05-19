@@ -16,8 +16,8 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_navigation"
         app:itemBackground="@android:color/black"
-        app:itemTextColor="@android:color/white"
-        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@drawable/bottom_navigation_bg_color"
+        app:itemIconTint="@drawable/bottom_navigation_bg_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation">
