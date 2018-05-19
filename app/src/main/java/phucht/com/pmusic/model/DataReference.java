@@ -13,6 +13,7 @@ public class DataReference {
     private DatabaseReference mSectionRef = mDatabase.getReference("sections");
 
     private ArrayList mSectionList;
+    private ArrayList allSongs = new ArrayList();
 
     public static DataReference getInstance() {
         if (mRef == null) {
@@ -35,5 +36,13 @@ public class DataReference {
 
     public void setSectionList(ArrayList list) {
         mSectionList = list;
+        for (int i = 0; i < mSectionList.size(); i++) {
+            if (((HashMap) mSectionList.get(i)).get("data") != null)
+                allSongs.addAll((ArrayList) ((HashMap) mSectionList.get(i)).get("data"));
+        }
+    }
+
+    public ArrayList getAllSongs() {
+        return allSongs;
     }
 }

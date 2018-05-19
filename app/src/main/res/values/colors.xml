@@ -16,4 +16,7 @@
     <color name="fragment.newmusic.background">#141414</color>
     <color name="fragment.newmusic.text">#ffffff</color>
     <color name="fragment.newmusic.singer.text">#80ffffff</color>
+
+    <!-- State color -->
+    <color name="color.green.main">#1db954</color>
 </resources>

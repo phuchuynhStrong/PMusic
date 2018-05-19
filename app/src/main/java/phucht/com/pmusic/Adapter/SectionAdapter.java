@@ -52,7 +52,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
         holder.mHeader.setText(header);
 
         ArrayList map = (ArrayList) dataMap.get("data");
-        holder.mList.setAdapter(new SongInSectionAdapter(mContext, map));
+        holder.mList.setAdapter(new SongInSectionAdapter(mContext, map, SongInSectionAdapter.HORIZONTAL_LIST));
         holder.mList.setLayoutManager(layoutManager);
     }
 

@@ -22,69 +22,50 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
 
 import phucht.com.pmusic.Service.PlayAudioService;
-import phucht.com.pmusic.Interface.OnSongItemClickListener;
-import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
-import phucht.com.pmusic.Util.SharedPrefs;
-import phucht.com.pmusic.model.Playlist;
+import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
+import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
+import phucht.com.pmusic.Object.SongItem.Song;
+import phucht.com.pmusic.Object.PlaylistItem.Playlist;
 import phucht.com.pmusic.Util.BottomNavigationHelper;
-import phucht.com.pmusic.Util.LanguageUtils;
-import phucht.com.pmusic.model.Song;
-import phucht.com.pmusic.model.Theme;
 
 public class MainActivity extends AppCompatActivity
-        implements OnSongItemClickListener,
-        OnPlaylistItemClickListener, OnNavigationItemSelectedListener {
+        implements OnSongFragmentInteractionListener,
+        OnPlaylistFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     FragmentTransaction fragmentTransaction;
-    HomeFragment homeFragment;
-    PlaylistFragment playlistFragment;
+    NewMusicFragment newMusicFragment;
     SongFragment songFragment;
-    SettingFragment settingFragment;
-
+    PlaylistFragment playlistFragment;
     AlertDialog.Builder mDialog;
-    Toolbar toolbar;
-    TextView titlePage;
     BottomNavigationView mBottomNaivgationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        titlePage = findViewById(R.id.titlePage);
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
         mBottomNaivgationView = findViewById(R.id.bottom_navigation);
-        mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
+
+        setSupportActionBar(toolbar);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
 
-        loadTheme();
-
-        homeFragment = HomeFragment.getInstance();
-        playlistFragment = PlaylistFragment.getInstance();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        newMusicFragment = new NewMusicFragment();
         songFragment = SongFragment.getInstance();
-        settingFragment = SettingFragment.getInstance();
-
-        replaceFragment(homeFragment, getString(R.string.home));
+        playlistFragment = PlaylistFragment.getInstance();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Increase duration of enter transition - shared element
             getWindow().setSharedElementEnterTransition(enterTransition());
         }
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-    }
-
-    public void loadTheme() {
-        int color = SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getColor();
-        toolbar.setBackgroundColor(getResources().getColor(color));
-        mBottomNaivgationView.setBackgroundColor(getResources().getColor(color));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment).commit();
     }
 
     public void createDialogYesNo(String question,
@@ -166,6 +147,31 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//
+//        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_new_music) {
+//            fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment);
+//            Objects.requireNonNull(getSupportActionBar()).setTitle("New Music");
+//        } else if (id == R.id.nav_songs) {
+//            fragmentTransaction.replace(R.id.frameLayoutMain, songFragment);
+//            Objects.requireNonNull(getSupportActionBar()).setTitle("Songs");
+//        } else if (id == R.id.nav_playlists) {
+//            fragmentTransaction.replace(R.id.frameLayoutMain, playlistFragment);
+//            Objects.requireNonNull(getSupportActionBar()).setTitle("Playlists");
+//        }
+//        fragmentTransaction.commit();
+//
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
+
     @Override
     public void onSongItemClick(Song song) {
         // TODO play this song
@@ -232,29 +238,29 @@ public class MainActivity extends AppCompatActivity
                 }, null);
     }
 
-    void replaceFragment(Fragment fragment, String namePage) {
+    void replaceFragment(Fragment fragment) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayoutMain, fragment);
-        fragmentTransaction.commit();
-        titlePage.setText(namePage);
+        fragmentTransaction.replace(R.id.frameLayoutMain, fragment).commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        item.setChecked(true);
         switch (item.getItemId()) {
             case R.id.action_home:
-                replaceFragment(homeFragment, getString(R.string.home));
+                replaceFragment(newMusicFragment);
                 break;
             case R.id.action_playlist:
-                replaceFragment(playlistFragment, getString(R.string.playlists));
+                replaceFragment(playlistFragment);
                 break;
             case R.id.action_search:
-                replaceFragment(songFragment, getString(R.string.search));
+                replaceFragment(searchFragment);
                 break;
             case R.id.action_setting:
-                replaceFragment(settingFragment, getString(R.string.settings));
+                replaceFragment(settingFragment);
                 break;
             default:
+
         }
         return false;
     }

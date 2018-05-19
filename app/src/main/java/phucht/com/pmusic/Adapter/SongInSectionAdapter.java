@@ -21,20 +21,33 @@ import phucht.com.pmusic.R;
 import phucht.com.pmusic.UI.PlayerScreen;
 
 public class SongInSectionAdapter extends RecyclerView.Adapter<SongInSectionAdapter.ViewHolder> {
+    public static final int VERTICAL_LIST = 0;
+    public static final int HORIZONTAL_LIST = 1;
 
     ArrayList<HashMap> mSongs;
     Context mContext;
+    int mOrientation = 1;
 
-    public SongInSectionAdapter(Context context, ArrayList<HashMap> songs) {
+    public SongInSectionAdapter(Context context, ArrayList<HashMap> songs, int orientation) {
         super();
         mContext = context;
         mSongs = songs;
+        mOrientation = orientation;
+    }
+
+    public void setData(ArrayList<HashMap> data) {
+        mSongs = data;
+        notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View rootView = layoutInflater.inflate(R.layout.section_item_layout, parent, false);
+        View rootView;
+        if (mOrientation == HORIZONTAL_LIST)
+            rootView = layoutInflater.inflate(R.layout.section_item_layout_horizontal, parent, false);
+        else
+            rootView = layoutInflater.inflate(R.layout.section_item_layout_vertical, parent, false);
 
         return new ViewHolder(rootView);
     }

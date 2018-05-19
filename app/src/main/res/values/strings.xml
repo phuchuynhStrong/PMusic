@@ -31,4 +31,6 @@
         <item>@string/language_english_code</item>
         <item>@string/language_vietnamese_code</item>
     </string-array>
+    <string name="type_something">Type something...</string>
+    <string name="results">Results</string>
 </resources>
