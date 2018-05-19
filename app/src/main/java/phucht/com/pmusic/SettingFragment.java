@@ -107,7 +107,7 @@ public class SettingFragment extends Fragment {
         int color = getResources().getColor(SharedPrefs.getInstance().get(SharedPrefs.THEME, Theme.class).getColor());
         toolbar.setBackgroundColor(color);
         mBottomNavigationView.setBackgroundColor(color);
-        mTitlepage.setText(R.string.settings);
+//        mTitlepage.setText(R.string.settings);
         mLanguage.setText(R.string.language);
         mTheme.setText(R.string.theme);
         mAbout.setText(R.string.about);

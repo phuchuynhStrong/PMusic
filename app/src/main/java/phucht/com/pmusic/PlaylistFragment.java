@@ -55,25 +55,25 @@ public class PlaylistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-            // TODO Dummy data
-            PLAYLISTS = new ArrayList<>();
-            for (int i = 1; i <= 25; i++) {
-                List<Song> list = new ArrayList<>();
-                for (int j = 1; j <= i; j++) {
-                    list.add(new Song(j, "https://image.flaticon.com/icons/png/128/78/78373.png",
-                            "Song " + j, "Description " + j, (j % 2 == 1) ? 1 : 0));
-                }
-                PLAYLISTS.add(new Playlist(i, "https://image.flaticon.com/icons/png/128/78/78373.png",
-                        "Playlist " + i, "Description " + i, (i % 2 == 1) ? 1 : 0, list));
-            }
-
-            recyclerView.setAdapter(new PlaylistAdapter(PLAYLISTS, App.self(), mListener));
-        }
+//        if (view instanceof RecyclerView) {
+//            Context context = view.getContext();
+//            RecyclerView recyclerView = (RecyclerView) view;
+//            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//
+//            // TODO Dummy data
+//            PLAYLISTS = new ArrayList<>();
+//            for (int i = 1; i <= 25; i++) {
+//                List<Song> list = new ArrayList<>();
+//                for (int j = 1; j <= i; j++) {
+//                    list.add(new Song(j, "https://image.flaticon.com/icons/png/128/78/78373.png",
+//                            "Song " + j, "Description " + j, (j % 2 == 1) ? 1 : 0));
+//                }
+//                PLAYLISTS.add(new Playlist(i, "https://image.flaticon.com/icons/png/128/78/78373.png",
+//                        "Playlist " + i, "Description " + i, (i % 2 == 1) ? 1 : 0, list));
+//            }
+//
+//            recyclerView.setAdapter(new PlaylistAdapter(PLAYLISTS, App.self(), mListener));
+//        }
         return view;
     }
 
@@ -81,17 +81,17 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPlaylistItemClickListener) {
-            mListener = (OnPlaylistItemClickListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnPlayListItemClickListener");
-        }
+//        if (context instanceof OnPlaylistItemClickListener) {
+//            mListener = (OnPlaylistItemClickListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnPlayListItemClickListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 }

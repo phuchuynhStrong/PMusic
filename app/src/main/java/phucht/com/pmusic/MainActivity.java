@@ -27,20 +27,16 @@ import android.widget.Toast;
 import java.util.Objects;
 
 import phucht.com.pmusic.Service.PlayAudioService;
-import phucht.com.pmusic.SongFragment.OnSongFragmentInteractionListener;
-import phucht.com.pmusic.PlaylistFragment.OnPlaylistFragmentInteractionListener;
-import phucht.com.pmusic.Object.SongItem.Song;
-import phucht.com.pmusic.Object.PlaylistItem.Playlist;
 import phucht.com.pmusic.Util.BottomNavigationHelper;
 
-public class MainActivity extends AppCompatActivity
-        implements OnSongFragmentInteractionListener,
-        OnPlaylistFragmentInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     FragmentTransaction fragmentTransaction;
-    NewMusicFragment newMusicFragment;
+    HomeFragment homeFragment;
     SongFragment songFragment;
     PlaylistFragment playlistFragment;
+    SearchFragment searchFragment;
+    SettingFragment settingFragment;
     AlertDialog.Builder mDialog;
     BottomNavigationView mBottomNaivgationView;
 
@@ -53,11 +49,14 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
         BottomNavigationHelper.disableShiftMode(mBottomNaivgationView);
+        mBottomNaivgationView.setOnNavigationItemSelectedListener(this);
 
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        newMusicFragment = new NewMusicFragment();
+        homeFragment = new HomeFragment();
         songFragment = SongFragment.getInstance();
         playlistFragment = PlaylistFragment.getInstance();
+        searchFragment = SearchFragment.getInstance();
+        settingFragment = SettingFragment.getInstance();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Increase duration of enter transition - shared element
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        fragmentTransaction.replace(R.id.frameLayoutMain, newMusicFragment).commit();
+        fragmentTransaction.replace(R.id.frameLayoutMain, homeFragment).commit();
     }
 
     public void createDialogYesNo(String question,
@@ -172,71 +171,71 @@ public class MainActivity extends AppCompatActivity
 //        return true;
 //    }
 
-    @Override
-    public void onSongItemClick(Song song) {
-        // TODO play this song
-        Toast.makeText(this, "Song " + song.getId() + " - " + song.getDescription(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void favoriteSong(Song song, ImageButton button) {
-        if (song.getFavorite() == 1) {
-            // TODO update icon unfavorite
-            song.setFavorite(0);
-            button.setSelected(false);
-            // TODO update database
-        } else {
-            // TODO update icon favorite
-            song.setFavorite(1);
-            button.setSelected(true);
-            // TODO update database
-        }
-    }
-
-    @Override
-    public void deleteSong(Song song) {
-        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + song.getFavorite(),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO delete song & update database
-                        Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
-                    }
-                }, null);
-    }
-
-    @Override
-    public void onPlaylistItemClick(Playlist playlist) {
-        // TODO play this playlist
-        Toast.makeText(this, "Playlist " + playlist.getId() + " - " + playlist.getDescription(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void favoritePlaylist(Playlist playlist, ImageButton button) {
-        if (playlist.getFavorite() == 1) {
-            // TODO update icon unfavorite
-            playlist.setFavorite(0);
-            button.setSelected(false);
-            // TODO update database
-        } else {
-            // TODO update icon favorite
-            playlist.setFavorite(1);
-            button.setSelected(true);
-            // TODO update database
-        }
-    }
-
-    @Override
-    public void deletePlaylist(Playlist playlist) {
-        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + playlist.getName(),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // TODO delete playlist & update database
-                        Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
-                    }
-                }, null);
-    }
+//    @Override
+//    public void onSongItemClick(Song song) {
+//        // TODO play this song
+//        Toast.makeText(this, "Song " + song.getId() + " - " + song.getDescription(), Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    public void favoriteSong(Song song, ImageButton button) {
+//        if (song.getFavorite() == 1) {
+//            // TODO update icon unfavorite
+//            song.setFavorite(0);
+//            button.setSelected(false);
+//            // TODO update database
+//        } else {
+//            // TODO update icon favorite
+//            song.setFavorite(1);
+//            button.setSelected(true);
+//            // TODO update database
+//        }
+//    }
+//
+//    @Override
+//    public void deleteSong(Song song) {
+//        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + song.getFavorite(),
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        // TODO delete song & update database
+//                        Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, null);
+//    }
+//
+//    @Override
+//    public void onPlaylistItemClick(Playlist playlist) {
+//        // TODO play this playlist
+//        Toast.makeText(this, "Playlist " + playlist.getId() + " - " + playlist.getDescription(), Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    public void favoritePlaylist(Playlist playlist, ImageButton button) {
+//        if (playlist.getFavorite() == 1) {
+//            // TODO update icon unfavorite
+//            playlist.setFavorite(0);
+//            button.setSelected(false);
+//            // TODO update database
+//        } else {
+//            // TODO update icon favorite
+//            playlist.setFavorite(1);
+//            button.setSelected(true);
+//            // TODO update database
+//        }
+//    }
+//
+//    @Override
+//    public void deletePlaylist(Playlist playlist) {
+//        createDialogYesNo(getString(R.string.do_you_want_to_delete) + " " + playlist.getName(),
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        // TODO delete playlist & update database
+//                        Toast.makeText(getApplicationContext(), "You clicked Yes.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, null);
+//    }
 
     void replaceFragment(Fragment fragment) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -248,7 +247,7 @@ public class MainActivity extends AppCompatActivity
         item.setChecked(true);
         switch (item.getItemId()) {
             case R.id.action_home:
-                replaceFragment(newMusicFragment);
+                replaceFragment(homeFragment);
                 break;
             case R.id.action_playlist:
                 replaceFragment(playlistFragment);
