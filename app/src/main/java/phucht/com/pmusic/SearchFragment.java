@@ -78,7 +78,7 @@ public class SearchFragment extends Fragment {
         mListSongs = rootView.findViewById(R.id.fragment_search_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new SongInSectionAdapter(getContext(), DataReference.getInstance().getAllSongs(), SongInSectionAdapter.VERTICAL_LIST);
+        mAdapter = new SongInSectionAdapter(getContext(), getActivity(), DataReference.getInstance().getAllSongs(), SongInSectionAdapter.VERTICAL_LIST);
         mListSongs.setLayoutManager(layoutManager);
         mListSongs.setAdapter(mAdapter);
 

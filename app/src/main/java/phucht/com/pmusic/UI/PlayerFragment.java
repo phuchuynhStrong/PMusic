@@ -1,6 +1,8 @@
 package phucht.com.pmusic.UI;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -43,12 +46,14 @@ public class PlayerFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        Log.v("PlayerFragment", "onStart");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        Log.v("PlayerFragment", "onDestroy");
     }
 
     public static PlayerFragment newInstance(HashMap incomingData) {
@@ -65,20 +70,25 @@ public class PlayerFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         mData = (HashMap) getArguments().getSerializable("data");
-        try {
-            MainActivity.getPlayService().playMedia(mData.get("mp3").toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        AsyncTask.execute(() -> {
+            try {
+                MainActivity.getPlayService().playMedia(mData.get("mp3").toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayEventReceived(PlayEvent event) {
         switch (event.getEventType()) {
             case PlayEvent.PLAY_EVENT_START:
+                Log.v("Event", "Start");
                 mPlayBtn.setImageResource(R.mipmap.ic_pause);
                 break;
             case PlayEvent.PLAY_EVENT_PAUSE:
+                Log.v("Event", "Pause");
                 mPlayBtn.setImageResource(R.mipmap.ic_play);
                 break;
             case PlayEvent.PLAY_EVENT_STOP:
@@ -134,6 +144,8 @@ public class PlayerFragment extends Fragment {
                 .into(mCoverImage);
         return rootView;
     }
+
+
 
 
 }
