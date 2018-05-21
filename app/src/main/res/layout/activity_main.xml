@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -12,16 +11,6 @@
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <android.support.design.widget.BottomNavigationView
-        android:layout_alignParentBottom="true"
-        android:id="@+id/bottom_navigation"
-        app:itemBackground="@android:color/black"
-        app:itemTextColor="@drawable/bottom_navigation_bg_color"
-        app:itemIconTint="@drawable/bottom_navigation_bg_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_navigation">
 
-    </android.support.design.widget.BottomNavigationView>
 
 </RelativeLayout>

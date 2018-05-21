@@ -1,9 +1,12 @@
 package phucht.com.pmusic;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +40,20 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new SectionAdapter(getContext(), DataReference.getInstance().getSectionList());
+        mAdapter = new SectionAdapter(getContext(), getActivity(), DataReference.getInstance().getSectionList());
         mLayoutManger = new LinearLayoutManager(getContext());
         mLayoutManger.setOrientation(LinearLayoutManager.VERTICAL);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Increase duration of enter transition - shared element
+            getActivity().getWindow().setSharedElementEnterTransition(enterTransition());
+        }
+    }
+
+    private Transition enterTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(2000);
+        return bounds;
     }
 
     @Override

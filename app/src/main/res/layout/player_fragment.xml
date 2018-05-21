@@ -111,6 +111,7 @@ android:layout_height="match_parent">
                 android:layout_width="320dp"
                 android:maxHeight="20dp"
                 android:minHeight="8dp"
+                android:max="100"
                 android:layout_height="20dp"
                 android:thumb="@drawable/volume_thumb"
                 android:id="@+id/seekbar"

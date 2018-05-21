@@ -1,6 +1,8 @@
 package phucht.com.pmusic.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,10 +19,12 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
 
     private ArrayList mListSections;
     Context mContext;
+    FragmentActivity mActivity;
 
-    public SectionAdapter(Context context, ArrayList data) {
+    public SectionAdapter(Context context, FragmentActivity activity, ArrayList data) {
         super();
         setData(data);
+        mActivity = activity;
         mContext = context;
     }
 
@@ -52,7 +56,7 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.ViewHold
         holder.mHeader.setText(header);
 
         ArrayList map = (ArrayList) dataMap.get("data");
-        holder.mList.setAdapter(new SongInSectionAdapter(mContext, map, SongInSectionAdapter.HORIZONTAL_LIST));
+        holder.mList.setAdapter(new SongInSectionAdapter(mContext, mActivity, map, SongInSectionAdapter.HORIZONTAL_LIST));
         holder.mList.setLayoutManager(layoutManager);
     }
 

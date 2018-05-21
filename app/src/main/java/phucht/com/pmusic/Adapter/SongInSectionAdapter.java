@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import phucht.com.pmusic.MainActivity;
 import phucht.com.pmusic.R;
 import phucht.com.pmusic.UI.PlayerScreen;
 
@@ -26,11 +28,13 @@ public class SongInSectionAdapter extends RecyclerView.Adapter<SongInSectionAdap
 
     ArrayList<HashMap> mSongs;
     Context mContext;
+    FragmentActivity mActivity;
     int mOrientation = 1;
 
-    public SongInSectionAdapter(Context context, ArrayList<HashMap> songs, int orientation) {
+    public SongInSectionAdapter(Context context, FragmentActivity activity, ArrayList<HashMap> songs, int orientation) {
         super();
         mContext = context;
+        mActivity = activity;
         mSongs = songs;
         mOrientation = orientation;
     }
@@ -63,16 +67,8 @@ public class SongInSectionAdapter extends RecyclerView.Adapter<SongInSectionAdap
         holder.mText.setText(map.get("title").toString());
         holder.mSinger.setText(map.get("singer").toString());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent playIntent = new Intent(mContext, PlayerScreen.class);
-                playIntent.putExtra("data", map);
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext,
-                        holder.mCover,
-                        "song.image");
-                mContext.startActivity(playIntent, activityOptionsCompat.toBundle());
-            }
+        holder.itemView.setOnClickListener(view -> {
+            if (mActivity != null) ((MainActivity) mActivity).navigatePlayFragment(map);
         });
     }
 
