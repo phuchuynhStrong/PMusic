@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -30,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCoordinator = findViewById(R.id.coordinator);
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        replaceFragment(mMainFragment);
+        addFragment(mMainFragment, "main");
+        addFragment(mPlayFragment, "player");
+        showFragment(mMainFragment, "main", false, mPlayFragment);
     }
 
     private static Boolean mBound = false;
@@ -68,29 +69,46 @@ public class MainActivity extends AppCompatActivity {
         mBound = false;
     }
 
-    void replaceFragment(Fragment fragment) {
+    void showFragment(Fragment fragment, String tag, Boolean useAnimation, Fragment hiddenFragment) {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayoutMain, fragment).commit();
+        if (useAnimation) {
+            fragmentTransaction
+                    .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+                    .show(fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
+        else {
+            fragmentTransaction
+                    .hide(hiddenFragment)
+                    .show(fragment)
+                    .commit();
+        }
+    }
+
+    void addFragment(Fragment fragment, String tag) {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.frameLayoutMain, fragment, tag).commit();
+    }
+
+    void hideFragment(Fragment fragment, Boolean useAnimation) {
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (useAnimation) {
+            fragmentTransaction
+                    .setCustomAnimations(R.anim.slide_up, R.anim.slide_down)
+                    .hide(fragment)
+                    .commit();
+        }
+        else {
+            fragmentTransaction
+                    .hide(fragment)
+                    .commit();
+        }
     }
 
     public void navigatePlayFragment(HashMap map) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("data", map);
-        mPlayFragment.setArguments(bundle);
-        replaceFragment(mPlayFragment);
+        mPlayFragment.reloadData(map);
+        showFragment(mPlayFragment, "player", true, mMainFragment);
         currentFragment = 1;
-    }
-
-    public void backToMainFragment() {
-        replaceFragment(mMainFragment);
-        currentFragment = 0;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (currentFragment == 1) {
-            replaceFragment(mMainFragment);
-            currentFragment = 0;
-        }
     }
 }

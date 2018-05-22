@@ -1,5 +1,6 @@
 package phucht.com.pmusic.UI;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -45,7 +46,6 @@ public class PlayerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
         Log.v("PlayerFragment", "onStart");
     }
 
@@ -65,17 +65,31 @@ public class PlayerFragment extends Fragment {
         return mFragment;
     }
 
+    public void reloadDataPlayer(HashMap data) {
+        mData = data;
+        AsyncTask.execute(() -> {
+            if (mData.get("mp3") == null)
+                MainActivity.getPlayService().playMedia(null);
+            else
+                MainActivity.getPlayService().playMedia(mData.get("mp3").toString());
+        });
+        Glide.with(getContext())
+                .load(mData.get("cover").toString())
+                .into(mCoverImage);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.v("PlayerFragment", "onCreate");
+        EventBus.getDefault().register(this);
 
         super.onCreate(savedInstanceState);
         mData = (HashMap) getArguments().getSerializable("data");
         AsyncTask.execute(() -> {
-            try {
+            if (mData.get("mp3") == null)
+                MainActivity.getPlayService().playMedia(null);
+            else
                 MainActivity.getPlayService().playMedia(mData.get("mp3").toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
 
     }
@@ -95,18 +109,38 @@ public class PlayerFragment extends Fragment {
                 Log.v("Event", "Stop");
                 break;
             case PlayEvent.PLAY_EVENT_GET_CURRENT_POSITION:
+                Log.v("Event", "Get current position");
                 int currentPos = (int) event.getEventData().get(PlayEvent.EventData.CURRENT_POSITION);
                 int duration = (int) event.getEventData().get(PlayEvent.EventData.DURATION);
                 mCurrentTime.setText(TimeUtil.timeParse(currentPos));
                 mLeftTime.setText(TimeUtil.getEtrTime(currentPos, duration));
                 mSeekbar.setProgress((int) TimeUtil.timeParsePercent(currentPos, duration));
+                break;
+            case PlayEvent.PLAY_EVENT_NO_DATA:
+                mCurrentTime.setText("00:00");
+                mLeftTime.setText("00:00");
+                mSeekbar.setProgress(0);
+                break;
             default:
                 break;
         }
     }
 
     @Override
+    public void onAttach(Context context) {
+        Log.v("PlayerFragment", "onAttach");
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        Log.v("PlayerFragment", "onDetach");
+        super.onDetach();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle onSavedInstanceState) {
+        Log.v("PlayerFragment", "onCreateView");
 
         View rootView = inflater.inflate(R.layout.player_fragment, container, false);
         mPlayBtn = rootView.findViewById(R.id.play);

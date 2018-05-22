@@ -10,6 +10,7 @@ public class PlayEvent {
     public static final int PLAY_EVENT_PAUSE = 2;
     public static final int PLAY_EVENT_SEEK_TO = 3;
     public static final int PLAY_EVENT_GET_CURRENT_POSITION = 4;
+    public static final int PLAY_EVENT_NO_DATA = 5;
 
     public PlayEvent(int message, HashMap data) {
         mMessage = message;
