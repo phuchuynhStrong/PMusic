@@ -16,6 +16,7 @@ import java.util.List;
 import phucht.com.pmusic.Adapter.PlaylistAdapter;
 import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
 import phucht.com.pmusic.Util.App;
+import phucht.com.pmusic.model.DataReference;
 import phucht.com.pmusic.model.Playlist;
 import phucht.com.pmusic.model.Song;
 
@@ -26,7 +27,8 @@ import phucht.com.pmusic.model.Song;
  */
 public class PlaylistFragment extends Fragment {
 
-    List<Playlist> PLAYLISTS;
+    ArrayList PLAYLISTS;
+    PlaylistAdapter mAdapter;
     private OnPlaylistItemClickListener mListener;
 
     public static PlaylistFragment instance = null;
@@ -47,6 +49,8 @@ public class PlaylistFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PLAYLISTS = DataReference.getInstance().getPlaylistList();
+        mAdapter = new PlaylistAdapter(PLAYLISTS, App.self(), mListener);
     }
 
     @Override
@@ -55,25 +59,12 @@ public class PlaylistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
 
         // Set the adapter
-//        if (view instanceof RecyclerView) {
-//            Context context = view.getContext();
-//            RecyclerView recyclerView = (RecyclerView) view;
-//            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//
-//            // TODO Dummy data
-//            PLAYLISTS = new ArrayList<>();
-//            for (int i = 1; i <= 25; i++) {
-//                List<Song> list = new ArrayList<>();
-//                for (int j = 1; j <= i; j++) {
-//                    list.add(new Song(j, "https://image.flaticon.com/icons/png/128/78/78373.png",
-//                            "Song " + j, "Description " + j, (j % 2 == 1) ? 1 : 0));
-//                }
-//                PLAYLISTS.add(new Playlist(i, "https://image.flaticon.com/icons/png/128/78/78373.png",
-//                        "Playlist " + i, "Description " + i, (i % 2 == 1) ? 1 : 0, list));
-//            }
-//
-//            recyclerView.setAdapter(new PlaylistAdapter(PLAYLISTS, App.self(), mListener));
-//        }
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(mAdapter);
+        }
         return view;
     }
 

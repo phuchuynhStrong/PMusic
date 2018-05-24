@@ -16,6 +16,8 @@ import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
 import phucht.com.pmusic.R;
 import phucht.com.pmusic.model.Playlist;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,11 +26,11 @@ import java.util.List;
  */
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
 
-    private final List<Playlist> playlistList;
+    private final ArrayList playlistList;
     private final Context mContext;
     private final OnPlaylistItemClickListener mListener;
 
-    public PlaylistAdapter(List<Playlist> playlists, Context context, OnPlaylistItemClickListener listener) {
+    public PlaylistAdapter(ArrayList playlists, Context context, OnPlaylistItemClickListener listener) {
         playlistList = playlists;
         mContext = context;
         mListener = listener;
@@ -43,50 +45,49 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mPlaylist = playlistList.get(position);
+        HashMap dataMap = (HashMap) playlistList.get(position);
 
         Glide.with(mContext)
-                .load(R.drawable.ic_placeholder)
+                .load(dataMap.get("avatar"))
                 .into(holder.mAvatar);
 
-        holder.mName.setText(holder.mPlaylist.getName());
-        holder.mDescription.setText(holder.mPlaylist.getDescription());
-        if (holder.mPlaylist.getFavorite() == 1)
+        holder.mName.setText((String) dataMap.get("name"));
+        holder.mDescription.setText((String) dataMap.get("description"));
+        if ((Long) dataMap.get("favorite") == 1)
             holder.mFavorite.setSelected(true);
         else
             holder.mFavorite.setSelected(false);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onPlaylistItemClick(holder.mPlaylist);
-                }
+        holder.mView.setOnClickListener(v -> {
+            if (null != mListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onPlaylistItemClick(holder.mPlaylist);
             }
         });
 
-        holder.mFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been favorited.
-                    mListener.favoritePlaylist(holder.mPlaylist, holder.mFavorite);
-                }
-            }
+        holder.mFavorite.setOnClickListener(view -> {
+//            if (null != mListener) {
+//                // Notify the active callbacks interface (the activity, if the
+//                // fragment is attached to one) that an item has been favorited.
+//
+//                mListener.favoritePlaylist(dataMap, holder.mFavorite);
+//            }
+
+            if (holder.mFavorite.isSelected())
+                holder.mFavorite.setSelected(false);
+            else
+                holder.mFavorite.setSelected(true);
         });
 
-        holder.mDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been deleted.
-                    mListener.deletePlaylist(holder.mPlaylist);
-                }
-            }
+        holder.mDelete.setOnClickListener(view -> {
+//            if (null != mListener) {
+//                // Notify the active callbacks interface (the activity, if the
+//                // fragment is attached to one) that an item has been deleted.
+//                mListener.deletePlaylist(holder.mPlaylist);
+//            }
+            playlistList.remove(position);
+            notifyDataSetChanged();
         });
     }
 
