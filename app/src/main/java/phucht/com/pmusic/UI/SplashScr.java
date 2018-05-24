@@ -63,16 +63,24 @@ public class SplashScr extends AppCompatActivity {
         });
 
         DataReference.getInstance().getPlaylistRef().addValueEventListener(new ValueEventListener() {
+            boolean splash = false;
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataReference.getInstance().setPlaylistList((ArrayList) dataSnapshot.getValue());
-                stopLoading();
+                if (!splash) {
+                    stopLoading();
+                    splash = true;
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("SplashLoadingError", "Failed to read value", databaseError.toException());
-                stopLoading();
+                if (!splash) {
+                    stopLoading();
+                    splash = true;
+                }
             }
         });
     }

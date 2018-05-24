@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import phucht.com.pmusic.Interface.OnPlaylistItemClickListener;
 import phucht.com.pmusic.R;
+import phucht.com.pmusic.model.DataReference;
 import phucht.com.pmusic.model.Playlist;
 
 import java.util.ArrayList;
@@ -74,10 +76,15 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 //                mListener.favoritePlaylist(dataMap, holder.mFavorite);
 //            }
 
-            if (holder.mFavorite.isSelected())
+            if (holder.mFavorite.isSelected()) {
                 holder.mFavorite.setSelected(false);
-            else
+                DataReference.getInstance().getPlaylistRef().child(String.valueOf(position)).child("favorite").setValue(0);
+
+            } else {
                 holder.mFavorite.setSelected(true);
+                DataReference.getInstance().getPlaylistRef().child(String.valueOf(position)).child("favorite").setValue(1);
+                Toast.makeText(mContext, "Playlist " + dataMap.get("name") + " favorited", Toast.LENGTH_SHORT).show();
+            }
         });
 
         holder.mDelete.setOnClickListener(view -> {

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlack"
     android:orientation="vertical"
     tools:context=".SettingFragment">
 
@@ -14,6 +15,7 @@
         android:drawableEnd="@drawable/ic_right_black_24dp"
         android:padding="@dimen/margin_medium"
         android:text="@string/language"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/text_medium" />
 
     <TextView
@@ -24,6 +26,7 @@
         android:drawableEnd="@drawable/ic_right_black_24dp"
         android:padding="@dimen/margin_medium"
         android:text="@string/theme"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/text_medium" />
 
     <TextView
@@ -34,6 +37,7 @@
         android:drawableEnd="@drawable/ic_right_black_24dp"
         android:padding="@dimen/margin_medium"
         android:text="@string/about"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/text_medium" />
 
 </LinearLayout>

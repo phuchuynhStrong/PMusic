@@ -6,5 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/setting_state"
     android:padding="@dimen/margin_medium"
+    android:textColor="@android:color/white"
     android:textSize="@dimen/text_medium"
     tools:text="@string/language_english" />
